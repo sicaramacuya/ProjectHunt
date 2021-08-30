@@ -33,6 +33,7 @@ class PostTableViewCell: UITableViewCell {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = "Name"
+    label.font = UIFont.systemFont(ofSize: 24)
     label.setContentHuggingPriority(.init(rawValue: 250), for: .horizontal)
     
     return label
@@ -113,23 +114,24 @@ class PostTableViewCell: UITableViewCell {
     // MARK: Constraints
     NSLayoutConstraint.activate([
       // container
-      container.topAnchor.constraint(equalTo: self.topAnchor),
-      container.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-      container.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-      container.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+      container.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+      container.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16),
+      container.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: CGFloat(self.separatorInset.left)),
+      container.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
       
       // nameLabel
       nameLabel.topAnchor.constraint(equalTo: container.topAnchor),
       nameLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-      nameLabel.trailingAnchor.constraint(equalTo: horizontalStackView.leadingAnchor, constant: 12),
+      nameLabel.trailingAnchor.constraint(equalTo: horizontalStackView.leadingAnchor, constant: -12),
       
       // horizontalStackView
       horizontalStackView.topAnchor.constraint(equalTo: container.topAnchor),
       horizontalStackView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+      horizontalStackView.centerYAnchor.constraint(equalTo: nameLabel.centerYAnchor),
       
       // previewImage
       previewImageView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 5.5),
-      previewImageView.bottomAnchor.constraint(equalTo: taglineLabel.topAnchor, constant: 8),
+      previewImageView.bottomAnchor.constraint(equalTo: taglineLabel.topAnchor, constant: -8),
       previewImageView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 8),
       previewImageView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -8),
       

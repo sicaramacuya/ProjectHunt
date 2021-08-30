@@ -16,6 +16,13 @@ class FeedVC: UIViewController {
     
     return table
   }()
+  lazy var mockData: [Post] = {
+    var meTube = Post(id: 0, name: "MeTube", tagline: "Stream videos for free!", votesCount: 25, commentsCount: 4)
+    var boogle = Post(id: 1, name: "Boogle", tagline: "Search anything!", votesCount: 1000, commentsCount: 50)
+    var meTunes = Post(id: 2, name: "meTunes", tagline: "Listen to any song!", votesCount: 25000, commentsCount: 590)
+    
+    return [meTube, boogle, meTunes]
+  }()
   
   // MARK: VC Lifecycle
   override func viewDidLoad() {
@@ -51,12 +58,14 @@ extension FeedVC: UITableViewDataSource {
 
   // Determines how many cells will be shown on the table view.
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 3
+    return mockData.count
   }
   
   // Creates and configures each cell.
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier, for: indexPath) as! PostTableViewCell
+    let post = mockData[indexPath.row]
+    cell.post = post
     
     return cell
   }
