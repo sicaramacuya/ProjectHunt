@@ -33,6 +33,9 @@ class FeedVC: UIViewController {
     feedTableView.delegate = self
     feedTableView.dataSource = self
     
+    // Letting table know we want to use the custom cell file.
+    feedTableView.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.identifier)
+    
     self.view.addSubview(feedTableView)
     NSLayoutConstraint.activate([
       feedTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
@@ -53,8 +56,9 @@ extension FeedVC: UITableViewDataSource {
   
   // Creates and configures each cell.
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier, for: indexPath) as! PostTableViewCell
     
-    return UITableViewCell()
+    return cell
   }
   
   
@@ -63,4 +67,7 @@ extension FeedVC: UITableViewDataSource {
 // MARK: TableViewDelegate
 extension FeedVC: UITableViewDelegate {
   // Code to handle cell eventes goes here...
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return 250
+  }
 }
