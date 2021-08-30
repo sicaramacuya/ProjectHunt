@@ -11,6 +11,18 @@ class PostTableViewCell: UITableViewCell {
   
   // MARK: Properties
   static var identifier: String = "postCell"
+  var post: Post? {
+    didSet {
+      guard let post = post else { return }
+      
+      self.nameLabel.text = post.name
+      self.taglineLabel.text = post.tagline
+      self.commentsCountLabel.text = "Comments: \(post.commentsCount)"
+      self.votesCountLabel.text = "Votes: \(post.votesCount)"
+      
+      updatePreviewImage()
+    }
+  }
   lazy var container: UIView = {
     let view = UIView()
     view.translatesAutoresizingMaskIntoConstraints = false
@@ -35,7 +47,7 @@ class PostTableViewCell: UITableViewCell {
     
     return stackView
   }()
-  lazy var commentsLabel: UILabel = {
+  lazy var commentsCountLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = "Comments: 0"
@@ -43,7 +55,7 @@ class PostTableViewCell: UITableViewCell {
     
     return label
   }()
-  lazy var votesLabel: UILabel = {
+  lazy var votesCountLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = "Votes: 0"
@@ -51,10 +63,9 @@ class PostTableViewCell: UITableViewCell {
     
     return label
   }()
-  lazy var previewImage: UIImageView = {
+  lazy var previewImageView: UIImageView = {
     let image = UIImageView()
     image.translatesAutoresizingMaskIntoConstraints = false
-    image.image = UIImage(named: "placeholder")
     
     return image
   }()
@@ -66,6 +77,7 @@ class PostTableViewCell: UITableViewCell {
     
     return label
   }()
+  
   
   // MARK: Methods
   override func awakeFromNib() {
@@ -93,9 +105,9 @@ class PostTableViewCell: UITableViewCell {
     self.addSubview(container)
     container.addSubview(nameLabel)
     container.addSubview(horizontalStackView)
-    horizontalStackView.addArrangedSubview(commentsLabel)
-    horizontalStackView.addArrangedSubview(votesLabel)
-    container.addSubview(previewImage)
+    horizontalStackView.addArrangedSubview(commentsCountLabel)
+    horizontalStackView.addArrangedSubview(votesCountLabel)
+    container.addSubview(previewImageView)
     container.addSubview(taglineLabel)
     
     // MARK: Constraints
@@ -116,10 +128,10 @@ class PostTableViewCell: UITableViewCell {
       horizontalStackView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
       
       // previewImage
-      previewImage.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 5.5),
-      previewImage.bottomAnchor.constraint(equalTo: taglineLabel.topAnchor, constant: 8),
-      previewImage.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 8),
-      previewImage.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -8),
+      previewImageView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 5.5),
+      previewImageView.bottomAnchor.constraint(equalTo: taglineLabel.topAnchor, constant: 8),
+      previewImageView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 8),
+      previewImageView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -8),
       
       // taglineLabel
       taglineLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor),
@@ -128,4 +140,9 @@ class PostTableViewCell: UITableViewCell {
     ])
   }
   
+  func updatePreviewImage() {
+    guard let post = post else { return }
+    
+    previewImageView.image = UIImage(named: "placeholder")
+  }
 }
