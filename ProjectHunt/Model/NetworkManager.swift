@@ -26,7 +26,7 @@ class NetworkManager {
       "Accept": "application/json",
       "Content-Type": "application/json",
       "Authorization": "Bearer \(token)",
-      "Host": "api.producthunt.com" // ????????????????????????????????????
+      "Host": "api.producthunt.com"
     ]
     
     let task = urlSession.dataTask(with: request) { data, response, error in
@@ -35,7 +35,7 @@ class NetworkManager {
       
       // Check to see if there is any data that was retrieved.
       guard let data = data else { print("Data can't be retrived."); return }
-      print(data)
+      
       // Attempt to decode the data
       guard let result = try? JSONDecoder().decode(PostList.self, from: data) else { print("Data can't be decoded."); return }
       
