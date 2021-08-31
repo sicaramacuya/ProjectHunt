@@ -8,11 +8,12 @@
 import Foundation
 
 class NetworkManager {
-  // Shared singleton session object used to run tasks. Will be useful later
+  // Used to create the network request
   let urlSession = URLSession.shared
   var baseURL = "https://bedecked-scythe-sorrel.glitch.me/v1/"
   var token = "SeubGwc_ZQwQtUgk5ZHIU0xdK_Fc9mYgIBjhafrSfvY"
   
+  // Method that handle the request
   func getPosts(completion: @escaping ([Post]) -> Void) {
     // Construct the URL to get posts from API
     let query = "posts/all?sort_by=votes_count&order=desc&search[featured]=true&per_page=20"
@@ -33,10 +34,10 @@ class NetworkManager {
       if let error = error { print(error.localizedDescription); return }
       
       // Check to see if there is any data that was retrieved.
-      guard let data = data else { return }
-      
+      guard let data = data else { print("Data can't be retrived."); return }
+      print(data)
       // Attempt to decode the data
-      guard let result = try? JSONDecoder().decode(PostList.self, from: data) else { return }
+      guard let result = try? JSONDecoder().decode(PostList.self, from: data) else { print("Data can't be decoded."); return }
       
       let posts = result.posts
       

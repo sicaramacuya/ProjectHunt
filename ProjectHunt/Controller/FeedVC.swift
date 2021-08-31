@@ -17,12 +17,18 @@ class FeedVC: UIViewController {
     return table
   }()
   lazy var mockData: [Post] = {
-    var meTube = Post(id: 0, name: "MeTube", tagline: "Stream videos for free!", votesCount: 25, commentsCount: 4)
-    var boogle = Post(id: 1, name: "Boogle", tagline: "Search anything!", votesCount: 1000, commentsCount: 50)
-    var meTunes = Post(id: 2, name: "meTunes", tagline: "Listen to any song!", votesCount: 25000, commentsCount: 590)
+    var meTube = Post(id: 0, name: "MeTube", tagline: "Stream videos for free!", votesCount: 25, commentsCount: 4, previewImageURL: URL(string: "https://via.placeholder.com/350x160")!)
+    var boogle = Post(id: 1, name: "Boogle", tagline: "Search anything!", votesCount: 1000, commentsCount: 50, previewImageURL: URL(string: "https://via.placeholder.com/350x160")!)
+    var meTunes = Post(id: 2, name: "meTunes", tagline: "Listen to any song!", votesCount: 25000, commentsCount: 590, previewImageURL: URL(string: "https://via.placeholder.com/350x160")!)
     
     return [meTube, boogle, meTunes]
   }()
+  lazy var posts: [Post] = [] {
+    didSet {
+      feedTableView.reloadData()
+    }
+  }
+  lazy var networkManager = NetworkManager()
   
   // MARK: VC Lifecycle
   override func viewDidLoad() {
@@ -33,6 +39,7 @@ class FeedVC: UIViewController {
     self.title = "Feed"
     
     setTable()
+    updateFeed()
   }
   
   // MARK: Methods
@@ -51,6 +58,10 @@ class FeedVC: UIViewController {
       feedTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
     ])
   }
+  
+  func updateFeed() {
+    networkManager.getPosts() { result in self.posts = result }
+  }
 }
 
 // MARK: TableViewDataSource
@@ -58,13 +69,13 @@ extension FeedVC: UITableViewDataSource {
 
   // Determines how many cells will be shown on the table view.
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return mockData.count
+    return posts.count
   }
   
   // Creates and configures each cell.
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier, for: indexPath) as! PostTableViewCell
-    let post = mockData[indexPath.row]
+    let post = posts[indexPath.row]
     cell.post = post
     
     return cell
