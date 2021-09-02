@@ -26,7 +26,7 @@ class NetworkManager {
       "Accept": "application/json",
       "Content-Type": "application/json",
       "Authorization": "Bearer \(token)",
-      "Host": "api.producthunt.com"
+      //"Host": "api.producthunt.com"
     ]
     
     let task = urlSession.dataTask(with: request) { data, response, error in
@@ -37,14 +37,25 @@ class NetworkManager {
       guard let data = data else { print("Data can't be retrived."); return }
       
       // Attempt to decode the data
-      guard let result = try? JSONDecoder().decode(PostList.self, from: data) else { print("Data can't be decoded."); return }
+//      guard let result = try? JSONDecoder().decode(PostList.self, from: data) else { print("Data can't be decoded."); return }
+      do {
+          let result = try JSONDecoder().decode(PostList.self, from: data)
+          let posts = result.posts
+
+          // Return the result with the completion handler.
+          DispatchQueue.main.async {
+            completion(posts)
+          }
+      } catch let error2 {
+          fatalError(error2.localizedDescription)
+      }
       
-      let posts = result.posts
+//      let posts = result.posts
       
       // Return the result with the completion handler.
-      DispatchQueue.main.async {
-        completion(posts)
-      }
+//      DispatchQueue.main.async {
+//        completion(posts)
+//      }
       
     }
     
