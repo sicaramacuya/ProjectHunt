@@ -23,6 +23,15 @@ struct PostList: Decodable {
   var posts: [Post]
 }
 
+struct Comment: Decodable {
+  let id: Int
+  let body: String
+}
+
+struct CommentApiResponse: Decodable {
+  let comments: [Comment]
+}
+
 extension Post: Decodable {
   // Properties within a Post returned from the Product Hunt API that we want to extract the info from.
   enum PostKeys: String, CodingKey {
