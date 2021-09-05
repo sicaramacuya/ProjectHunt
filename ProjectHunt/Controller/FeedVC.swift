@@ -90,4 +90,13 @@ extension FeedVC: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return 250
   }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let post = posts[indexPath.row]
+    
+    let commentsViewController = CommentsVC()
+    commentsViewController.comments = ["Blak blak blak!", "Good app.", "Wow."]
+    navigationController?.pushViewController(commentsViewController, animated: true)
+    
+  }
 }
