@@ -60,7 +60,14 @@ class FeedVC: UIViewController {
   }
   
   func updateFeed() {
-    networkManager.getPosts() { result in self.posts = result }
+    networkManager.getPosts() { result in
+      switch result {
+      case let .success(posts):
+        self.posts = posts
+      case let .failure(error):
+        print(error)
+      }
+    }
   }
 }
 
@@ -94,9 +101,9 @@ extension FeedVC: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let post = posts[indexPath.row]
     
-    let commentsViewController = CommentsVC()
-    commentsViewController.comments = ["Blak blak blak!", "Good app.", "Wow."]
-    navigationController?.pushViewController(commentsViewController, animated: true)
+    let commentsVC = CommentsVC()
+    commentsVC.postID = post.id
+    navigationController?.pushViewController(commentsVC, animated: true)
     
   }
 }

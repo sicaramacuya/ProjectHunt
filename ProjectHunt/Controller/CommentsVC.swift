@@ -10,11 +10,13 @@ import UIKit
 class CommentsVC: UIViewController {
   
   // MARK: Properties
-  lazy var comments: [String]! = [] {
+  var postID: Int!
+  lazy var comments: [Comment]! = [] {
     didSet {
       commentsTabelView.reloadData()
     }
   }
+  lazy var networkManager = NetworkManager()
   lazy var commentsTabelView: UITableView = {
     let table = UITableView()
     table.translatesAutoresizingMaskIntoConstraints = false
@@ -30,6 +32,8 @@ class CommentsVC: UIViewController {
     setTable()
     navigationController?.navigationBar.prefersLargeTitles = true
     self.title = "Comments"
+    
+    updateComments()
   }
   
   // MARK: Methods
@@ -48,6 +52,19 @@ class CommentsVC: UIViewController {
       commentsTabelView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
     ])
   }
+  
+  func updateComments() {
+    // Similar to what we did for posts
+    networkManager.getComments(postID) { result in
+      switch result {
+      case let .success(comments):
+        self.comments = comments
+      case let .failure(error):
+        print(error)
+      }
+    }
+  }
+  
 }
 
 // MARK: TableViewDataSource
@@ -60,7 +77,7 @@ extension CommentsVC: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: CommentsTableViewCell.identifier, for: indexPath) as! CommentsTableViewCell
     let comment = comments[indexPath.row]
-    cell.commentTextView.text = comment
+    cell.commentTextView.text = comment.body
     
     return cell
   }

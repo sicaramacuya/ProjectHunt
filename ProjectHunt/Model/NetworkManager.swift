@@ -97,8 +97,7 @@ class NetworkManager {
       return [
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "Authorization": "Baerer \(token)",
-        
+        "Authorization": "Bearer \(token)"
       ]
     }
     
