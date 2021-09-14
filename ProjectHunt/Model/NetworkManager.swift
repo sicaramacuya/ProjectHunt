@@ -10,7 +10,7 @@ import Foundation
 class NetworkManager {
   // Used to create the network request
   let urlSession = URLSession.shared
-  var baseURL = "https://bedecked-scythe-sorrel.glitch.me/v1/"
+  var baseURL = "https://api.producthunt.com/v1/"
   var token = "SeubGwc_ZQwQtUgk5ZHIU0xdK_Fc9mYgIBjhafrSfvY"
   
   // Method that handle the request
